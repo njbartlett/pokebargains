@@ -1,0 +1,4 @@
+[home]
+title = "Home"
+url = "/index.html"
+nav = true

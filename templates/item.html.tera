@@ -1,0 +1,92 @@
+{% extends "default_layout" %}
+
+{% block content %}
+<!-- Begin index.html content block -->
+
+<div class="container my-5">
+    <small><a href="/">&lt; Back to Item Listings</a></small>
+
+    <h2 class="text-center my-2">{{item.title}}</h2>
+    <h1 class="text-center align-items-center">
+        £{{item.price}}
+        <a class="btn btn-success" href="mailto:test@pokebargains.co.uk">Send Enquiry</a>
+    </h1>
+
+    <div class="alert alert-secondary">
+        {{item.description}}
+    </div>
+
+    <!-- Image Navigation Button Bar -->
+    <div class="my-2 center d-flex flex-wrap justify-content-center align-items-center">
+        <div class="me-1 fs-normal text-primary">Show Image:</div>
+        <div id="itemImageNavigation" class="cloaked btn-group">
+            <!-- Prev Image Button -->
+            <button type="button" class="btn btn-outline-primary flex-grow-0" onclick="previousImage()">&laquo;</button>
+            {% for image in images %}
+                {% if loop.first %}
+                <button id="carouselImageButton{{loop.index0}}" type="button" class="btn btn-primary flex-grow-0" onclick="showImage({{loop.index0}})">{{loop.index}}</button>
+                {% else %}
+                <button id="carouselImageButton{{loop.index0}}" type="button" class="btn btn-outline-primary flex-grow-0" onclick="showImage({{loop.index0}})">{{loop.index}}</button>
+                {% endif %}
+            {% endfor %}
+            <!-- Next Image Button -->
+            <button type="button" class="btn btn-outline-primary flex-grow-0" onclick="nextImage()">&raquo;</button>
+        </div>
+        <button id="itemImageNavigationSpinner" class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span role="status">Loading...</span>
+        </button>
+    </div>
+
+    <!-- Image Carousel -->
+    <div id="itemImageCarousel" class="carousel slide">
+        <div class="carousel-inner">
+            {% for image in images %}
+                {% if loop.first %}
+                <div class="carousel-item active">
+                {% else %}
+                <div class="carousel-item">
+                {% endif %}
+                <img src="{{image.url}}" class="d-block w-100">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- End index.html content block -->
+{% endblock %}
+
+{% block extra_script %}
+<script>
+    const carouselElem = document.querySelector('#itemImageCarousel')
+    carouselElem.addEventListener('slid.bs.carousel', onShowCarouselSlid)
+    const carousel = new bootstrap.Carousel(carouselElem, {})
+
+    document.querySelector('#itemImageNavigationSpinner').classList.add('cloaked')
+    document.querySelector('#itemImageNavigation').classList.remove('cloaked')
+
+    function previousImage() {
+        carousel.prev()
+    }
+    function nextImage() {
+        carousel.next()
+    }
+    function showImage(index) {
+        carousel.to(index)
+    }
+    // Update the rendering of the image selection buttons when the carousel has moved
+    function onShowCarouselSlid(ev) {
+        setSelectedButton(document.getElementById('carouselImageButton' + ev.to), true)
+        setSelectedButton(document.getElementById('carouselImageButton' + ev.from), false)
+    }
+    function setSelectedButton(btn, selected) {
+        if (selected) {
+            btn.classList.remove('btn-outline-primary')
+            btn.classList.add('btn-primary')
+        } else {
+            btn.classList.remove('btn-primary')
+            btn.classList.add('btn-outline-primary')
+        }
+    }
+</script>
+{% endblock %}

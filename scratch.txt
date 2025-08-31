@@ -1,0 +1,19 @@
+let mut objects = s3_client.list_objects_v2()
+    .bucket("pfnext-images")
+    .prefix("categories/")
+    .delimiter("/")
+    .into_paginator()
+    .send();
+
+while let Some(object) = objects.next().await {
+    match object {
+        Ok(o) => {
+            print!("### {:?}", o.common_prefixes());
+            for o in o.contents() {
+                println!(" - {:?}", o);
+            }
+        },
+        Err(err) => eprintln!("{err:?}")
+    }
+}
+    

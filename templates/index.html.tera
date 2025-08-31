@@ -1,0 +1,34 @@
+{% extends "default_layout" %}
+
+{% block content %}
+<!-- Begin index.html content block -->
+
+<div class="container my-5">
+    <!-- start first row -->
+    <div class="row g-2"> 
+    {% for item in items %}
+        {% if loop.index0 % 3 == 0 and not loop.first %}
+            <!-- end row -->
+            </div> 
+            <!-- start next row -->
+            <div class="row mt-1 g-2"> <!-- start first row -->
+        {% endif %}
+        <div class="col-sm">
+            <div class="card rounded-3 shadow-sm border-primary">
+                <div class="card-header d-flex align-items-top">
+                    <h6 class="me-1 fw-normal"><a href="item/{{item.id}}" class="stretched-link">{{item.title}}</a></h6>    
+                    <h6 class="ms-auto">£{{item.price}}</h6>
+                </div>
+                <div class="card-body">
+                    {% if item.lead_image_url %}
+                    <img class="img-fluid" src="{{item.lead_image_url}}">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+     <!-- end last row -->
+    </div>
+</div>
+<!-- End index.html content block -->
+{% endblock %}
