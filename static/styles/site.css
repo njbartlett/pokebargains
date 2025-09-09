@@ -1,3 +1,7 @@
 .cloaked {
     display: none !important;
 }
+
+.btn-group-wrapped {
+    flex-wrap: wrap;
+}
