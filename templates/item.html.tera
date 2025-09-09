@@ -9,7 +9,7 @@
     <h2 class="text-center my-2">{{item.title}}</h2>
     <h1 class="text-center align-items-center">
         £{{item.price}}
-        <a class="btn btn-success" href="mailto:test@pokebargains.co.uk">Send Enquiry</a>
+        <a class="btn btn-success" href="mailto:info@pokebargains.co.uk?subject={{item.title}} [id {{item.id}}]">Send Enquiry</a>
     </h1>
 
     <div class="alert alert-secondary">
