@@ -97,7 +97,7 @@ impl FromRow<'_, PgRow> for ItemSummary {
 
 impl ItemSummary {
     const BASE_QUERY: &str = "SELECT i.id, i.category, i.title, i.description, i.price, c.\"name\" AS category_name,
-        (SELECT url FROM image WHERE image.item = i.id LIMIT 1) AS lead_image_url
+        (SELECT url FROM image WHERE image.item = i.id ORDER BY ordinal ASC LIMIT 1) AS lead_image_url
         FROM item AS i
         JOIN category AS c ON i.category = c.id";
     async fn load_all(pool: &PgPool) -> Result<Vec<Self>, sqlx::Error> {
@@ -125,7 +125,7 @@ struct ItemImage {
 
 impl ItemImage {
     async fn load_by_item_id(item_id: i64, pool: &PgPool) -> Result<Vec<Self>, sqlx::Error> {
-        query_as("SELECT * FROM image WHERE item = $1")
+        query_as("SELECT * FROM image WHERE item = $1 ORDER BY ordinal ASC")
             .bind(item_id)
             .fetch_all(pool)
             .await
